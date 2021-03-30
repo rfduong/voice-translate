@@ -2,6 +2,7 @@ import React, { useCallback, useRef } from 'react';
 import ReactDOM from 'react-dom';
 import _ from 'lodash';
 const axios = require('axios');
+import Languages from './components/Languages.jsx';
 
 class App extends React.Component {
   constructor(props) {
@@ -10,8 +11,10 @@ class App extends React.Component {
       userInput: '',
       revUserInput: '',
       transformedText: '',
+      languageCode: 'en',
     }
     this.handleChange = this.handleChange.bind(this);
+    this.handleLanguageChange = this.handleLanguageChange.bind(this);
     this.delayedTranslate = _.debounce(this.translateText, 500);
   }
 
@@ -23,10 +26,18 @@ class App extends React.Component {
     });
   }
 
+  handleLanguageChange(e) {
+    this.setState({
+      languageCode: e.target.value,
+    });
+  }
+
   translateText() {
-    const { userInput } = this.state;
+    const { userInput, languageCode } = this.state;
+    console.log(languageCode);
     axios.post('/translate', {
-      userInput
+      userInput,
+      languageCode
     })
       .then((response) => {
         console.log(response);
@@ -45,7 +56,11 @@ class App extends React.Component {
       <div>
         <h2>Voice Translation</h2>
         <form>
+          {/* <Languages io="input" /> */}
           <textarea id="userInput" onChange={this.handleChange}></textarea>
+        </form>
+        <form>
+          <Languages io="output" translateTo={this.handleLanguageChange} />
           <textarea value={userInput === '' ? 'Translation' : translatedText} disabled></textarea>
         </form>
       </div>

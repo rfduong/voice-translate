@@ -14,8 +14,6 @@ app.use(express.static(__dirname + '/../client/dist'));
 const translate = new Translate({ projectId });
 
 async function getTranslation(text, target) {
-  // const text = 'Hello, world!';
-  // const target = 'ru';
   const [translation] = await translate.translate(text, target);
   console.log(`Text: ${text}`);
   console.log(`Translation: ${translation}`);
@@ -35,18 +33,35 @@ function reverseText(text) {
 app.post('/translate', (req, res) => {
   console.log(req.body);
   const {
-    userInput
+    userInput,
+    languageCode
   } = req.body;
-  getTranslation(userInput, 'ru')
+  getTranslation(userInput, languageCode)
     .then((translation) => {
       res.send(translation);
     })
     .catch((error) => {
+      console.log(error);
+      res.status(500).send(error);
+    });
+});
+
+async function listLanguages() {
+  const [languages] = await translate.getLanguages();
+  return languages;
+}
+
+app.get('/languages', (req, res) => {
+  listLanguages()
+    .then((languages) => {
+      res.send(languages);
+    })
+    .catch((error) => {
+      console.log(error);
       res.status(500).send(error);
     });
 });
 
 app.listen(PORT, () => {
   console.log(`listening on port ${PORT}`);
-  // getTranslation('Hello, world!', 'ru');
 });

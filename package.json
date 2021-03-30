@@ -4,7 +4,8 @@
   "description": "Mini app that uses speech to text and translates that text.",
   "main": "index.js",
   "scripts": {
-    "react-dev": "webpack --mode development --watch"
+    "react-dev": "webpack --mode development --watch",
+    "start": "npx nodemon server/index.js"
   },
   "author": "Ronny Duong",
   "license": "MIT",

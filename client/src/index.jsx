@@ -29,18 +29,19 @@ class App extends React.Component {
   handleLanguageChange(e) {
     this.setState({
       languageCode: e.target.value,
-    });
+    }, () => this.delayedTranslate());
   }
 
   translateText() {
     const { userInput, languageCode } = this.state;
-    console.log(languageCode);
+    if (userInput === '') {
+      return;
+    }
     axios.post('/translate', {
       userInput,
       languageCode
     })
       .then((response) => {
-        console.log(response);
         this.setState({
           translatedText: response.data,
         });
@@ -51,7 +52,12 @@ class App extends React.Component {
   }
 
   render() {
-    const { userInput, revUserInput, translatedText } = this.state;
+    const {
+      userInput,
+      revUserInput,
+      translatedText,
+      languageCode
+    } = this.state;
     return (
       <div>
         <h2>Voice Translation</h2>
@@ -60,7 +66,7 @@ class App extends React.Component {
           <textarea id="userInput" onChange={this.handleChange}></textarea>
         </form>
         <form>
-          <Languages io="output" translateTo={this.handleLanguageChange} />
+          <Languages io="output" translateTo={this.handleLanguageChange} selectedLanguage={languageCode} />
           <textarea value={userInput === '' ? 'Translation' : translatedText} disabled></textarea>
         </form>
       </div>

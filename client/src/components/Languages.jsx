@@ -6,8 +6,6 @@ class Languages extends React.Component {
     super(props);
     this.state = {
       languages: [],
-      language: 'English',
-      languageCode: 'en'
     }
   }
 
@@ -28,14 +26,14 @@ class Languages extends React.Component {
   }
 
   render() {
-    const { io, translateTo } = this.props;
+    const { io, translateTo, selectedLanguage } = this.props;
     const { languages } = this.state;
     return (
       <div>
         <label htmlFor={io}>Language:</label>
-        <select id={io} name={io} onChange={translateTo}>
+        <select id={io} name={io} value={selectedLanguage} onChange={translateTo}>
           {languages.map((language) => {
-            return <option key={language.code} value={language.code}>{language.name}</option>
+            return <option key={language.code} value={language.code}>{language.name}</option>;
           })}
         </select>
       </div>

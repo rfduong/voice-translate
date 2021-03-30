@@ -1,0 +1,4 @@
+node_modules
+client/dist/bunde.js
+config.js
+*.env

@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useCallback, useRef } from 'react';
 import ReactDOM from 'react-dom';
+import _ from 'lodash';
 
 class App extends React.Component {
   constructor(props) {
@@ -10,25 +11,28 @@ class App extends React.Component {
     }
     this.handleChange = this.handleChange.bind(this);
     this.reverseText = this.reverseText.bind(this);
+    this.delayedTransform = _.debounce(this.reverseText, 300);
   }
 
   // placeholder transform function, should translate into another language later
   reverseText() {
     const { userInput } = this.state;
-    const revUserInput = [...userInput];
+    console.log(`Transforming ${userInput}`);
+    let revUserInput = [...userInput];
     for (let i = 0; i < revUserInput.length/2; i++) {
       let temp = revUserInput[i];
       revUserInput[i] = revUserInput[revUserInput.length-i-1];
       revUserInput[revUserInput.length-i-1] = temp;
     }
     console.log(revUserInput);
+    revUserInput = revUserInput.join('');
     this.setState({ revUserInput });
   }
 
   handleChange(e) {
     this.setState({
       [e.target.id]: e.target.value,
-    });
+    }, this.delayedTransform(e.target.value));
   }
 
   render() {

@@ -1,6 +1,7 @@
 import React, { useCallback, useRef } from 'react';
 import ReactDOM from 'react-dom';
 import _ from 'lodash';
+const axios = require('axios');
 
 class App extends React.Component {
   constructor(props) {
@@ -8,41 +9,44 @@ class App extends React.Component {
     this.state = {
       userInput: '',
       revUserInput: '',
+      transformedText: '',
     }
     this.handleChange = this.handleChange.bind(this);
-    this.reverseText = this.reverseText.bind(this);
-    this.delayedTransform = _.debounce(this.reverseText, 300);
-  }
-
-  // placeholder transform function, should translate into another language later
-  reverseText() {
-    const { userInput } = this.state;
-    console.log(`Transforming ${userInput}`);
-    let revUserInput = [...userInput];
-    for (let i = 0; i < revUserInput.length/2; i++) {
-      let temp = revUserInput[i];
-      revUserInput[i] = revUserInput[revUserInput.length-i-1];
-      revUserInput[revUserInput.length-i-1] = temp;
-    }
-    console.log(revUserInput);
-    revUserInput = revUserInput.join('');
-    this.setState({ revUserInput });
+    this.delayedTranslate = _.debounce(this.translateText, 500);
   }
 
   handleChange(e) {
     this.setState({
       [e.target.id]: e.target.value,
-    }, this.delayedTransform(e.target.value));
+    }, () => {
+      this.delayedTranslate();
+    });
+  }
+
+  translateText() {
+    const { userInput } = this.state;
+    axios.post('/translate', {
+      userInput
+    })
+      .then((response) => {
+        console.log(response);
+        this.setState({
+          translatedText: response.data,
+        });
+      })
+      .catch((error) => {
+        console.error(error);
+      })
   }
 
   render() {
-    const { userInput, revUserInput } = this.state;
+    const { userInput, revUserInput, translatedText } = this.state;
     return (
       <div>
         <h2>Voice Translation</h2>
         <form>
           <textarea id="userInput" onChange={this.handleChange}></textarea>
-          <textarea value={userInput === '' ? 'Translation' : revUserInput} disabled></textarea>
+          <textarea value={userInput === '' ? 'Translation' : translatedText} disabled></textarea>
         </form>
       </div>
     );

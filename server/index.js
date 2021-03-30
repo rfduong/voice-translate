@@ -1,8 +1,12 @@
 const express = require('express');
 const { Translate } = require('@google-cloud/translate').v2;
+const recorder = require('node-record-lpcm16');
+const speech = require('@google-cloud/speech');
+
 const app = express();
-const PORT = 3000;
 require('dotenv').config();
+
+const PORT = 3000;
 
 const projectId = process.env.GOOGLE_PROJECT_ID;
 
@@ -11,6 +15,9 @@ app.use(express.urlencoded({extended: true}));
 
 app.use(express.static(__dirname + '/../client/dist'));
 
+/*
+Translation
+*/
 const translate = new Translate({ projectId });
 
 async function getTranslation(text, target) {
@@ -18,16 +25,6 @@ async function getTranslation(text, target) {
   console.log(`Text: ${text}`);
   console.log(`Translation: ${translation}`);
   return translation;
-}
-
-function reverseText(text) {
-  let revUserInput = [...text];
-  for (let i = 0; i < revUserInput.length/2; i++) {
-    let temp = revUserInput[i];
-    revUserInput[i] = revUserInput[revUserInput.length-i-1];
-    revUserInput[revUserInput.length-i-1] = temp;
-  }
-  return revUserInput.join('');
 }
 
 app.post('/translate', (req, res) => {
@@ -61,6 +58,18 @@ app.get('/languages', (req, res) => {
       res.status(500).send(error);
     });
 });
+
+/*
+Speech to text - google speech api - doesn't work
+- Tried quickstart example in here, would not work
+  - quickstart example: https://cloud.google.com/speech-to-text/docs/samples/speech-transcribe-streaming-mic#speech_transcribe_streaming_mic-nodejs
+- doesn't work on their terminal either
+- depends on sox
+  - sox is a library last updated 6 years ago that depends on deprecated ubuntu features
+- also, i'm using windows, which means i'm on WSL
+- WSL has no way of natively connecting my microphone so I can't test it
+- will have to use web speech api in browser rather than google speech api on node
+*/
 
 app.listen(PORT, () => {
   console.log(`listening on port ${PORT}`);

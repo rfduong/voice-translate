@@ -3,3 +3,4 @@ client/dist/bundle.js
 config.js
 *.env
 auth/
+sox*

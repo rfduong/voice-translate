@@ -13,16 +13,18 @@ class App extends React.Component {
       userInput: '',
       transformedText: '',
       languageCode: 'en',
+      listening: false,
     }
     this.handleChange = this.handleChange.bind(this);
     this.handleLanguageChange = this.handleLanguageChange.bind(this);
     this.handleListen = this.handleListen.bind(this);
-    this.delayedTranslate = _.debounce(this.translateText, 500);
+    this.initializeSpeechRecognition = this.initializeSpeechRecognition.bind(this);
+    this.delayedTranslate = _.debounce(this.translateText, 300);
     this.recognition = new SpeechRecognition();
   }
 
   componentDidMount() {
-    this.handleListen();
+    this.initializeSpeechRecognition();
   }
 
   handleChange(e) {
@@ -40,16 +42,24 @@ class App extends React.Component {
   }
 
   handleListen() {
+    this.recognition.start();
+  }
+
+  initializeSpeechRecognition() {
     const context = this;
     // This runs when the speech recognition service starts
     this.recognition.onstart = function() {
-      console.log("We are listening. Try speaking into the microphone.");
+      context.setState({
+        listening: true,
+      });
     };
 
     this.recognition.onspeechend = function() {
         // when user is done speaking
-        console.log('Done listening');
         context.recognition.stop();
+        context.setState({
+          listening: false,
+        });
     }
     // This runs when the speech recognition service returns result
     this.recognition.onresult = function(event) {
@@ -86,7 +96,8 @@ class App extends React.Component {
     const {
       userInput,
       translatedText,
-      languageCode
+      languageCode,
+      listening,
     } = this.state;
     return (
       <div>
@@ -100,7 +111,7 @@ class App extends React.Component {
           <Languages io="output" translateTo={this.handleLanguageChange} selectedLanguage={languageCode} />
           <textarea value={userInput === '' ? 'Translation' : translatedText} disabled></textarea>
         </form>
-        <button onClick={() => this.recognition.start()}>Microphone Icon here</button>
+        <button onClick={this.handleListen} disabled={listening}>{listening ? 'Listening...' : 'Microphone Icon here'}</button>
       </div>
     );
   }

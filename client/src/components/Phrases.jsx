@@ -11,9 +11,16 @@ class Phrases extends React.Component {
     const { commonPhrases } = this.props;
     return (
       <div id="common-phrases">
-        {commonPhrases.map((phrase) => {
-          return <span key={phrase._id}>{phrase.userInput}</span>
-        })}
+        <h3>Common phrases</h3>
+        <div id="phrase-container">
+          {commonPhrases.map((phrase, index) => {
+            return (
+              <div className="phrase" key={phrase._id}>
+                <div className="phrase-number"><span>{`${index + 1}`}</span></div>
+                <div className="phrase-text"><span>{phrase.userInput}</span></div>
+              </div>
+            );})}
+        </div>
       </div>
     );
   }

@@ -89,6 +89,51 @@ textarea:focus, input:focus {
   color: black;
 }
 
+#common-phrases {
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  margin-top: 10px;
+  margin-bottom: 16px;
+}
+
+#common-phrases h3,
+#phrase-container {
+  padding: 16px;
+}
+
+#common-phrases h3 {
+  margin: 0 auto;
+  font-weight: normal;
+  border-bottom: 1px solid #ccc;
+}
+
+
+.phrase {
+  margin: 10px 0;
+  display: flex;
+  justify-content: start;
+  align-items: center;
+}
+
+.phrase:first-child {
+  margin-top: 0;
+}
+
+.phrase:last-child {
+  margin-bottom: 0;
+}
+
+.phrase-number {
+  border: 1px solid #ccc;
+  border-radius: 50%;
+  height: 21px !important;
+  width: 21px !important;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-right: 20px;
+}
+
 @media screen and (min-width: 1280px) {
   #app {
     max-width: 1280px;

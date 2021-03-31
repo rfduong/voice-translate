@@ -135,10 +135,11 @@ class App extends React.Component {
             <form id="output-well-content">
               <textarea className="text-disabled" value={userInput === '' ? 'Translation' : translatedText} disabled></textarea>
             </form>
-            {translatedText
+            {userInput
               ? (
                 <div id="output-well-footer">
                   <button className="btn"><i className="bi bi-megaphone" alt="Listen" /></button>
+                  <button className="btn"><i className="bi bi-clipboard" /></button>
                 </div>
               ) : ''}
           </div>

@@ -15,9 +15,11 @@ class App extends React.Component {
       transformedText: '',
       languageCode: 'en',
       listening: false,
+      inputLanguageCode: 'en',
     }
     this.handleChange = this.handleChange.bind(this);
-    this.handleLanguageChange = this.handleLanguageChange.bind(this);
+    this.handleOutputLanguageChange = this.handleOutputLanguageChange.bind(this);
+    this.handleInputLanguageChange = this.handleInputLanguageChange.bind(this);
     this.handleListen = this.handleListen.bind(this);
     this.initializeSpeechRecognition = this.initializeSpeechRecognition.bind(this);
     this.delayedTranslate = _.debounce(this.translateText, 300);
@@ -36,10 +38,16 @@ class App extends React.Component {
     });
   }
 
-  handleLanguageChange(e) {
+  handleOutputLanguageChange(e) {
     this.setState({
       languageCode: e.target.value,
     }, () => this.delayedTranslate());
+  }
+
+  handleInputLanguageChange(e) {
+    this.setState({
+      inputLanguageCode: e.target.value,
+    });
   }
 
   handleListen() {
@@ -99,19 +107,23 @@ class App extends React.Component {
       translatedText,
       languageCode,
       listening,
+      inputLanguageCode,
     } = this.state;
     return (
       <div id="app">
         <h2>Voice Translation</h2>
         <div id="content">
-          <Languages io="input" />
-          <Languages io="output" translateTo={this.handleLanguageChange} selectedLanguage={languageCode} />
+          <Languages io="input" translateFrom={this.handleInputLanguageChange} selectedLanguage={inputLanguageCode}/>
+          <Languages io="output" translateTo={this.handleOutputLanguageChange} selectedLanguage={languageCode} />
           <div id="input-well">
             <form id="input-well-content">
               <textarea id="userInput" value={userInput} onChange={this.handleChange} maxLength="1000" autoFocus></textarea>
             </form>
             <div id="input-well-footer">
-              <button className={`btn ${listening ? 'btn-disabled' : ''}`} onClick={this.handleListen} disabled={listening}>{listening ? <i className="bi bi-mic-fill" /> : <i className="bi bi-mic" />}</button>
+              <div id="input-well-footer-buttons">
+                <button className={`btn ${listening ? 'btn-disabled' : ''}`} onClick={this.handleListen} disabled={listening}>{listening ? <i className="bi bi-mic-fill" alt="Translate by voice" /> : <i className="bi bi-mic" alt="Microphone active" />}</button>
+                {userInput ? <button className="btn"><i className="bi bi-megaphone" alt="Listen" /></button> : ''}
+              </div>
               <span>{`${userInput.length}/1000`}</span>
             </div>
           </div>
@@ -122,7 +134,7 @@ class App extends React.Component {
             {translatedText
               ? (
                 <div id="output-well-footer">
-                  <button className="btn"><i className="bi bi-megaphone" /></button>
+                  <button className="btn"><i className="bi bi-megaphone" alt="Listen" /></button>
                 </div>
               ) : ''}
           </div>

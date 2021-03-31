@@ -22,7 +22,7 @@ body {
 
 .language-options {
   border-bottom: 1px solid #ccc;
-  padding: 10px;
+  padding: 16px;
 }
 
 #input-well,
@@ -48,6 +48,10 @@ body {
   align-items: center;
 }
 
+#input-well-footer span {
+  padding-right: 16px;
+}
+
 textarea {
   width: 100%;
   border: none;
@@ -68,6 +72,7 @@ textarea:focus, input:focus {
 .btn {
   background-color: white;
   border: none;
+  outline: none;
   padding: 16px 16px;
   font-size: 16px;
   cursor: pointer;
@@ -93,6 +98,12 @@ textarea:focus, input:focus {
 @media only screen and (max-width: 720px) {
   #app {
     width: 100%;
+    padding-left: 0;
+    padding-right: 0;
+  }
+
+  #app h2 {
+    text-align: center;
   }
 
   #content {

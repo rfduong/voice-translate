@@ -1,4 +1,6 @@
 const express = require('express');
+const db = require('../database');
+const Phrase = require('../database/controllers/phrases.js');
 const { Translate } = require('@google-cloud/translate').v2;
 // const recorder = require('node-record-lpcm16');
 // const speech = require('@google-cloud/speech');
@@ -74,6 +76,18 @@ Speech to text - google speech api - doesn't work
 - WSL has no way of natively connecting my microphone so I can't test it
 - will have to use web speech api in browser rather than google speech api on node
 */
+
+app.get('/phrases', (req, res) => {
+  Phrase.getAll()
+    .then((response) => {
+      console.log(response);
+      res.send(response);
+    })
+    .catch((error) => {
+      console.error(error);
+      res.status(500).send(error);
+    });
+});
 
 app.listen(PORT, () => {
   console.log(`listening on port ${PORT}`);

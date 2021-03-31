@@ -17,3 +17,7 @@ const phraseSchema = mongoose.Schema({
     required: true
   }
 });
+
+const Phrase = mongoose.model('Phrase', phraseSchema);
+
+module.exports = Phrase;

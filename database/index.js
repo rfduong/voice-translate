@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-mongoose.connect('mongodb://localhost/voice-translate');
+mongoose.connect('mongodb://localhost:27017/phrase');
 
 const db = mongoose.connection;
 

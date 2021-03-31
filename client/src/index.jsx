@@ -1,6 +1,7 @@
 import React, { useCallback, useRef } from 'react';
 import ReactDOM from 'react-dom';
 import Languages from './components/Languages.jsx';
+import Phrases from './components/Phrases.jsx';
 import _ from 'lodash';
 import 'normalize.css';
 const axios = require('axios');
@@ -16,6 +17,7 @@ class App extends React.Component {
       languageCode: 'en',
       listening: false,
       inputLanguageCode: 'en',
+      commonPhrases: [],
     }
     this.handleChange = this.handleChange.bind(this);
     this.handleOutputLanguageChange = this.handleOutputLanguageChange.bind(this);
@@ -28,6 +30,7 @@ class App extends React.Component {
 
   componentDidMount() {
     this.initializeSpeechRecognition();
+    this.getPhrases();
   }
 
   handleChange(e) {
@@ -52,6 +55,17 @@ class App extends React.Component {
 
   handleListen() {
     this.recognition.start();
+  }
+
+  getPhrases() {
+    axios.get('/phrases')
+      .then((response) => {
+        console.log(response.data);
+        this.setState({ commonPhrases: response.data });
+      })
+      .catch((error) => {
+        console.error(error);
+      })
   }
 
   initializeSpeechRecognition() {
@@ -115,7 +129,9 @@ class App extends React.Component {
       languageCode,
       listening,
       inputLanguageCode,
+      commonPhrases,
     } = this.state;
+    console.log(commonPhrases, commonPhrases.length);
     return (
       <div id="app">
         <h2>Voice Translation</h2>
@@ -147,6 +163,7 @@ class App extends React.Component {
               ) : ''}
           </div>
         </div>
+        <Phrases commonPhrases={commonPhrases} />
       </div>
     );
   }

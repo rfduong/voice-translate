@@ -29,8 +29,8 @@ class Languages extends React.Component {
     const { io, translateTo, selectedLanguage } = this.props;
     const { languages } = this.state;
     return (
-      <div>
-        <label htmlFor={io}>Language:</label>
+      <div className="language-options">
+        <label htmlFor={io}>Language: </label>
         <select id={io} name={io} value={selectedLanguage} onChange={translateTo}>
           {languages.map((language) => {
             return <option key={language.code} value={language.code}>{language.name}</option>;

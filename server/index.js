@@ -1,7 +1,7 @@
 const express = require('express');
 const { Translate } = require('@google-cloud/translate').v2;
-const recorder = require('node-record-lpcm16');
-const speech = require('@google-cloud/speech');
+// const recorder = require('node-record-lpcm16');
+// const speech = require('@google-cloud/speech');
 
 const app = express();
 require('dotenv').config();
@@ -33,6 +33,10 @@ app.post('/translate', (req, res) => {
     userInput,
     languageCode
   } = req.body;
+  if (typeof userInput !== 'string' || userInput.length > 1000) {
+    res.status(500).send('Invalid request');
+    return;
+  }
   getTranslation(userInput, languageCode)
     .then((translation) => {
       res.send(translation);

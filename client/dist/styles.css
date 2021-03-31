@@ -1,0 +1,116 @@
+body {
+  /* background: 	#f2ebe0; */
+  font-family: 'Roboto', sans-serif;
+  font-display: swap;
+}
+
+#app {
+  /* display: flex;
+  align-items: center; */
+  margin: auto;
+  width: 60%;
+  /* border: 3px solid pink; */
+  padding: 10px;
+}
+
+#content {
+  margin: auto;
+  display: grid;
+  grid-template-columns: 50% 50%;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-shadow: 0 1px 4px 0 rgb(0 0 0 / 37%);
+}
+
+.language-options {
+  border-bottom: 1px solid #ccc;
+  padding: 10px;
+}
+
+#input-well,
+#output-well {
+  /* border: 1px solid #ccc; */
+  box-sizing: border-box;
+  /* margin-top: 6px;
+  margin-bottom: 16px; */
+}
+
+#input-well {
+  border-right: 1px solid #ccc;
+}
+
+#input-well-content,
+#output-well-content,
+#input-well-footer,
+#output-well-footer {
+  padding: 10px;
+}
+
+#input-well-footer,
+#output-well-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+textarea {
+  width: 100%;
+  /* padding: 12px; */
+  /* border: 1px solid #ccc;
+  margin-top: 6px;
+  margin-bottom: 16px; */
+  border: none;
+  box-sizing: border-box;
+  resize: none;
+  padding: 12px;
+  line-height: 32px;
+  /* resize: horizontal;
+  overflow: hidden !important;
+  height: fit-content; */
+}
+
+textarea:focus, input:focus {
+  outline: none;
+}
+
+.text-disabled {
+  background-color: white;
+}
+
+.btn {
+  /* background-color: DodgerBlue; Blue background */
+  background-color: white;
+  border: none; /* Remove borders */
+  /* color: white;  */
+  padding: 16px 16px; /* Some padding */
+  font-size: 16px; /* Set a font size */
+  cursor: pointer; /* Mouse pointer on hover */
+  height: 48px;
+  width: 48px;
+}
+
+/* Darker background on mouse-over */
+.btn:hover {
+  background-color: #ddd;
+  border-radius: 50%;
+}
+
+.btn-disabled {
+  color: black;
+}
+
+@media only screen and (max-width: 720px) {
+  #app {
+    width: 100%;
+  }
+
+  #content {
+    display: block;
+  }
+
+  #input-well {
+    border-bottom: 1px solid #ccc;
+    border-right: none;
+  }
+
+}

@@ -1,8 +1,9 @@
 import React, { useCallback, useRef } from 'react';
 import ReactDOM from 'react-dom';
-import _ from 'lodash';
-const axios = require('axios');
 import Languages from './components/Languages.jsx';
+import _ from 'lodash';
+import 'normalize.css';
+const axios = require('axios');
 
 let SpeechRecognition = SpeechRecognition || webkitSpeechRecognition;
 
@@ -100,21 +101,35 @@ class App extends React.Component {
       listening,
     } = this.state;
     return (
-      <div>
+      <div id="app">
         <h2>Voice Translation</h2>
-        <form>
-          {/* <Languages io="input" /> */}
-          <textarea id="userInput" value={userInput} onChange={this.handleChange} maxLength="1000"></textarea>
-          {`${userInput.length}/1000`}
-        </form>
-        <form>
+        <div id="content">
+          <Languages io="input" />
           <Languages io="output" translateTo={this.handleLanguageChange} selectedLanguage={languageCode} />
-          <textarea value={userInput === '' ? 'Translation' : translatedText} disabled></textarea>
-        </form>
-        <button onClick={this.handleListen} disabled={listening}>{listening ? 'Listening...' : 'Microphone Icon here'}</button>
+          <div id="input-well">
+            <form id="input-well-content">
+              <textarea id="userInput" value={userInput} onChange={this.handleChange} maxLength="1000" autoFocus></textarea>
+            </form>
+            <div id="input-well-footer">
+              <button className={`btn ${listening ? 'btn-disabled' : ''}`} onClick={this.handleListen} disabled={listening}>{listening ? <i className="bi bi-mic-fill" /> : <i className="bi bi-mic" />}</button>
+              <span>{`${userInput.length}/1000`}</span>
+            </div>
+          </div>
+          <div id="output-well">
+            <form id="output-well-content">
+              <textarea className="text-disabled" value={userInput === '' ? 'Translation' : translatedText} disabled></textarea>
+            </form>
+            {translatedText
+              ? (
+                <div id="output-well-footer">
+                  <button className="btn"><i className="bi bi-megaphone" /></button>
+                </div>
+              ) : ''}
+          </div>
+        </div>
       </div>
     );
   }
 }
 
-ReactDOM.render(<App />, document.getElementById('app'));
+ReactDOM.render(<App />, document.getElementById('root'));

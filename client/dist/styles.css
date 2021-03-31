@@ -58,7 +58,7 @@ textarea {
   box-sizing: border-box;
   resize: none;
   padding: 12px;
-  line-height: 32px;
+  /* line-height: 32px; */
 }
 
 textarea:focus, input:focus {

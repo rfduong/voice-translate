@@ -87,18 +87,22 @@ class App extends React.Component {
     if (userInput === '') {
       return;
     }
-    axios.post('/translate', {
-      userInput,
-      languageCode
-    })
-      .then((response) => {
-        this.setState({
-          translatedText: response.data,
-        });
+    this.setState({
+      translatedText: 'Translating...'
+    }, () => {
+      axios.post('/translate', {
+        userInput,
+        languageCode
       })
-      .catch((error) => {
-        console.error(error);
-      })
+        .then((response) => {
+          this.setState({
+            translatedText: response.data,
+          });
+        })
+        .catch((error) => {
+          console.error(error);
+        })
+    });
   }
 
   render() {

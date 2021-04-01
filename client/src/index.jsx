@@ -154,7 +154,7 @@ class App extends React.Component {
     } = this.state;
     return (
       <div id="app">
-        <h2><span style={{color: '#1a73e8'}}>Voice </span>Translation</h2>
+        <h2><span>Voice </span>Translation</h2>
         <div id="content">
           <Languages io="input" translateFrom={this.handleInputLanguageChange} selectedLanguage={inputLanguageCode}/>
           <Languages io="output" translateTo={this.handleOutputLanguageChange} selectedLanguage={languageCode} />

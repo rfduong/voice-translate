@@ -18,12 +18,14 @@ class App extends React.Component {
       listening: false,
       inputLanguageCode: 'en',
       commonPhrases: [],
+      copySuccess: false,
     }
     this.handleInputChange = this.handleInputChange.bind(this);
     this.handleOutputLanguageChange = this.handleOutputLanguageChange.bind(this);
     this.handleInputLanguageChange = this.handleInputLanguageChange.bind(this);
     this.handleListen = this.handleListen.bind(this);
     this.changeInput = this.changeInput.bind(this);
+    this.copyToClipBoard = this.copyToClipBoard.bind(this);
     this.getPhrases = this.getPhrases.bind(this);
     this.initializeSpeechRecognition = this.initializeSpeechRecognition.bind(this);
     this.delayedTranslate = _.debounce(this.translateText, 300);
@@ -80,6 +82,14 @@ class App extends React.Component {
     }, () => this.delayedTranslate());
   }
 
+  copyToClipBoard(textarea) {
+    navigator.clipboard.writeText(textarea.current.value);
+    this.translateArea.current.select();
+    this.setState({
+      copySuccess: true,
+    });
+  }
+
   initializeSpeechRecognition() {
     const context = this;
     // This runs when the speech recognition service starts
@@ -114,7 +124,8 @@ class App extends React.Component {
       return;
     }
     this.setState({
-      translatedText: 'Translating...'
+      translatedText: 'Translating...',
+      copySuccess: false,
     }, () => {
       axios.post('/translate', {
         userInput,
@@ -151,6 +162,7 @@ class App extends React.Component {
       listening,
       inputLanguageCode,
       commonPhrases,
+      copySuccess,
     } = this.state;
     return (
       <div id="app">
@@ -160,7 +172,7 @@ class App extends React.Component {
           <Languages io="output" translateTo={this.handleOutputLanguageChange} selectedLanguage={languageCode} />
           <div id="input-well">
             <form id="input-well-content">
-              <textarea id="userInput" value={userInput} onChange={this.handleInputChange} placeholder={listening ? 'Speak now' : ''}maxLength="1000" autoFocus></textarea>
+              <textarea id="userInput" value={userInput} onChange={this.handleInputChange} placeholder={listening ? 'Speak now' : ''} maxLength="1000" autoFocus></textarea>
             </form>
             <div id="input-well-footer">
               <div id="input-well-footer-buttons">
@@ -178,7 +190,7 @@ class App extends React.Component {
               ? (
                 <div id="output-well-footer">
                   <button className="btn translate-active"><i className="bi bi-megaphone" alt="Listen" /></button>
-                  <button className="btn translate-active"><i className="bi bi-clipboard" /></button>
+                  <button className="btn translate-active" onClick={() => this.copyToClipBoard(this.translateArea)}><i className={`bi ${copySuccess ? 'bi-clipboard-check' : 'bi-clipboard'}`} /></button>
                 </div>
               ) : ''}
           </div>

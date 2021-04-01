@@ -58,6 +58,7 @@ textarea {
   box-sizing: border-box;
   resize: none;
   padding: 12px;
+  font-size: 24px !important;
   /* line-height: 32px; */
 }
 
@@ -87,9 +88,10 @@ textarea:focus, input:focus {
 
 .btn-disabled {
   /* color: black; */
-  color: #5ab9ea;
+  /* color: #5ab9ea;
   color: #a8d0e6;
-  color: #8fc1e3;
+  color: #8fc1e3; */
+  color: #1a73e8;
 }
 
 #common-phrases {
@@ -108,6 +110,9 @@ textarea:focus, input:focus {
   margin: 0 auto;
   font-weight: normal;
   border-bottom: 1px solid #ccc;
+  /* padding-bottom: 0; */
+  color: #1a73e8;
+  /* background-color: #1a73e8; */
 }
 
 .phrase {
@@ -139,9 +144,10 @@ textarea:focus, input:focus {
 .phrase-text:hover {
   cursor: pointer;
   /* color: #659dbd; */
-  color: #5ab9ea;
+  /* color: #5ab9ea;
   color: #a8d0e6;
-  color: #8fc1e3;
+  color: #8fc1e3; */
+  color: #1a73e8
 }
 
 @media screen and (min-width: 1280px) {

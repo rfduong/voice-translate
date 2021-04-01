@@ -11,7 +11,7 @@ class Phrases extends React.Component {
     const { commonPhrases, changeInput } = this.props;
     return (
       <div id="common-phrases">
-        <h3>Common phrases</h3>
+        <h3><span>Common phrases</span></h3>
         <div id="phrase-container">
           {commonPhrases.map((phrase, index) => {
             return (

@@ -13,24 +13,28 @@ class SpeechPlayer extends React.Component {
   }
 
   componentDidMount() {
+    const { io } = this.props;
     this.audio.addEventListener('ended', () => {
       this.setState({ play: false}, () => {
-        this.audio.src = `/${this.props.io}.mp3?nocache=`+new Date().getTime();
+        this.audio.src = `/${io}.mp3?nocache=`+new Date().getTime();
+        console.log(this.audio.src);
+        this.audio.load();
         // this.audio = new Audio('/output.mp3?nocache='+new Date().getTime());
       });
     });
   }
 
   componentWillUnmount() {
+    const { io } = this.props;
     this.audio.removeEventListener('ended', () => {
       this.setState({ play: false}, () => {
-        this.audio.src = `/${this.props.io}.mp3?nocache=`+new Date().getTime();
+        this.audio.src = `/${io}.mp3?nocache=`+new Date().getTime();
+        console.log(this.audio.src);
+        this.audio.load();
         // this.audio = new Audio('/output.mp3?nocache='+new Date().getTime());
       });
     });
   }
-
-
 
   togglePlay() {
     // this.audio.src = '/output.mp3?nocache='+new Date().getTime();
@@ -49,13 +53,13 @@ class SpeechPlayer extends React.Component {
 
   render() {
     const { play } = this.state;
-    const { createSpeech, io } = this.props;
+    const { createSpeech, io, text, languageCode } = this.props;
     return (
       <button className={`btn ${io === 'output' ? 'translate-active' : ''}`} onClick={() => {
         createSpeech(io)
           .then(() => {
             this.audio.src = `/${io}.mp3?nocache=`+new Date().getTime();
-            console.log('audio should reload');
+            console.log('audio should reload', this.audio.src);
             this.togglePlay();
           })
           .catch((error) => {

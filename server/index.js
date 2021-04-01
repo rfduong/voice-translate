@@ -100,8 +100,10 @@ app.post('/text-to-speech', (req, res) => {
     res.status(500).send('Error getting speech');
     return;
   }
-  getSpeech(text, langCode, io);
-  res.send('audio file made');
+  getSpeech(text, langCode, io)
+    .then(() => {
+      res.send('audio file made');
+    })
 });
 
 /*

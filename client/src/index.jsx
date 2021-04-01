@@ -200,7 +200,7 @@ class App extends React.Component {
             <div id="input-well-footer">
               <div id="input-well-footer-buttons">
                 <button className={`btn ${listening ? 'btn-disabled' : ''}`} onClick={this.handleListen} disabled={listening}>{listening ? <i className="bi bi-mic-fill" alt="Translate by voice" /> : <i className="bi bi-mic" alt="Microphone active" />}</button>
-                {userInput ? <SpeechPlayer createSpeech={this.createSpeech} io={'input'}/> : ''}
+                {userInput ? <SpeechPlayer createSpeech={this.createSpeech} io={'input'} /> : ''}
               </div>
               <span>{`${userInput.length}/1000`}</span>
             </div>
@@ -212,7 +212,7 @@ class App extends React.Component {
             {userInput
               ? (
                 <div id="output-well-footer">
-                  <SpeechPlayer createSpeech={this.createSpeech} io={'output'}/>
+                  <SpeechPlayer createSpeech={this.createSpeech} io={'output'} />
                   <button className="btn translate-active" onClick={() => this.copyToClipBoard(this.translateArea)}><i className={`bi ${copySuccess ? 'bi-clipboard-check btn-disabled' : 'bi-clipboard'}`} /></button>
                 </div>
               ) : ''}

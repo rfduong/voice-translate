@@ -149,7 +149,7 @@ class App extends React.Component {
     } = this.state;
     return (
       <div id="app">
-        <h2>Voice Translation</h2>
+        <h2><span style={{color: '#1a73e8'}}>Voice </span>Translation</h2>
         <div id="content">
           <Languages io="input" translateFrom={this.handleInputLanguageChange} selectedLanguage={inputLanguageCode}/>
           <Languages io="output" translateTo={this.handleOutputLanguageChange} selectedLanguage={languageCode} />
@@ -165,15 +165,15 @@ class App extends React.Component {
               <span>{`${userInput.length}/1000`}</span>
             </div>
           </div>
-          <div id="output-well">
+          <div id="output-well" className={`${userInput === '' ? '' : 'translate-active'}`}>
             <form id="output-well-content">
-              <textarea className="text-disabled" value={userInput === '' ? 'Translation' : translatedText} disabled></textarea>
+              <textarea className={`text-disabled ${userInput === '' ? '' : 'translate-active'}`} placeholder="Translation" value={userInput === '' ? '' : translatedText} disabled></textarea>
             </form>
             {userInput
               ? (
                 <div id="output-well-footer">
-                  <button className="btn"><i className="bi bi-megaphone" alt="Listen" /></button>
-                  <button className="btn"><i className="bi bi-clipboard" /></button>
+                  <button className="btn translate-active"><i className="bi bi-megaphone" alt="Listen" /></button>
+                  <button className="btn translate-active"><i className="bi bi-clipboard" /></button>
                 </div>
               ) : ''}
           </div>

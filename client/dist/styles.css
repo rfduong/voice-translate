@@ -52,6 +52,10 @@ body {
   padding-right: 16px;
 }
 
+.translate-active {
+  background-color: #f3f3f3 !important;
+}
+
 textarea {
   width: 100%;
   border: none;
@@ -68,6 +72,7 @@ textarea:focus, input:focus {
 
 .text-disabled {
   background-color: white;
+  color: black !important;
 }
 
 .btn {
@@ -82,7 +87,7 @@ textarea:focus, input:focus {
 }
 
 .btn:hover {
-  background-color: #eee;
+  background-color: #ececec !important;
   border-radius: 50%;
 }
 

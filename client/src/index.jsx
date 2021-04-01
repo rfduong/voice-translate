@@ -1,4 +1,4 @@
-import React, { useCallback, useRef } from 'react';
+import React, { createRef } from 'react';
 import ReactDOM from 'react-dom';
 import Languages from './components/Languages.jsx';
 import Phrases from './components/Phrases.jsx';
@@ -19,7 +19,7 @@ class App extends React.Component {
       inputLanguageCode: 'en',
       commonPhrases: [],
     }
-    this.handleChange = this.handleChange.bind(this);
+    this.handleInputChange = this.handleInputChange.bind(this);
     this.handleOutputLanguageChange = this.handleOutputLanguageChange.bind(this);
     this.handleInputLanguageChange = this.handleInputLanguageChange.bind(this);
     this.handleListen = this.handleListen.bind(this);
@@ -28,6 +28,7 @@ class App extends React.Component {
     this.initializeSpeechRecognition = this.initializeSpeechRecognition.bind(this);
     this.delayedTranslate = _.debounce(this.translateText, 300);
     this.recognition = new SpeechRecognition();
+    this.translateArea = React.createRef();
   }
 
   componentDidMount() {
@@ -35,9 +36,13 @@ class App extends React.Component {
     this.getPhrases();
   }
 
-  handleChange(e) {
+  handleInputChange(e) {
+    e.target.style.height = 'inherit';
+    e.target.style.height = `${e.target.scrollHeight}px`;
+    this.translateArea.current.style.height = 'inherit';
+    this.translateArea.current.style.height = `${e.target.scrollHeight}px`;
     this.setState({
-      [e.target.id]: e.target.value,
+      userInput: e.target.value,
     }, () => {
       this.delayedTranslate();
     });
@@ -155,7 +160,7 @@ class App extends React.Component {
           <Languages io="output" translateTo={this.handleOutputLanguageChange} selectedLanguage={languageCode} />
           <div id="input-well">
             <form id="input-well-content">
-              <textarea id="userInput" value={userInput} onChange={this.handleChange} placeholder={listening ? 'Speak now' : ''}maxLength="1000" autoFocus></textarea>
+              <textarea id="userInput" value={userInput} onChange={this.handleInputChange} placeholder={listening ? 'Speak now' : ''}maxLength="1000" autoFocus></textarea>
             </form>
             <div id="input-well-footer">
               <div id="input-well-footer-buttons">
@@ -167,7 +172,7 @@ class App extends React.Component {
           </div>
           <div id="output-well" className={`${userInput === '' ? '' : 'translate-active'}`}>
             <form id="output-well-content">
-              <textarea className={`text-disabled ${userInput === '' ? '' : 'translate-active'}`} placeholder="Translation" value={userInput === '' ? '' : translatedText} disabled></textarea>
+              <textarea ref={this.translateArea} className={`text-disabled ${userInput === '' ? '' : 'translate-active'}`} placeholder="Translation" value={userInput === '' ? '' : translatedText} disabled></textarea>
             </form>
             {userInput
               ? (

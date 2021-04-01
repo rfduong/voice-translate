@@ -80,7 +80,6 @@ Speech to text - google speech api - doesn't work
 app.get('/phrases', (req, res) => {
   Phrase.getAll()
     .then((response) => {
-      console.log(response);
       res.send(response);
     })
     .catch((error) => {
@@ -96,7 +95,6 @@ app.post('/phrases', (req, res) => {
   } = req.body;
   Phrase.findPhraseAndUpdate(userInput, languageCode)
     .then((response) => {
-      console.log(response);
       res.status(201).send('');
     })
     .then((error) => {

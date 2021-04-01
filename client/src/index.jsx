@@ -190,7 +190,7 @@ class App extends React.Component {
               ? (
                 <div id="output-well-footer">
                   <button className="btn translate-active"><i className="bi bi-megaphone" alt="Listen" /></button>
-                  <button className="btn translate-active" onClick={() => this.copyToClipBoard(this.translateArea)}><i className={`bi ${copySuccess ? 'bi-clipboard-check' : 'bi-clipboard'}`} /></button>
+                  <button className="btn translate-active" onClick={() => this.copyToClipBoard(this.translateArea)}><i className={`bi ${copySuccess ? 'bi-clipboard-check btn-disabled' : 'bi-clipboard'}`} /></button>
                 </div>
               ) : ''}
           </div>

@@ -121,7 +121,11 @@ textarea:focus, input:focus {
   border-bottom: 1px solid #ccc;
   /* padding-bottom: 0; */
   color: #1a73e8;
-  /* background-color: #1a73e8; */
+  /* gradient: */
+  /* color: white;
+  background: linear-gradient(90deg, rgba(26,115,232,1) 35%, rgba(90,185,234,1) 100%);
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px; */
 }
 
 .phrase {

@@ -2,6 +2,7 @@ import React, { createRef } from 'react';
 import ReactDOM from 'react-dom';
 import Languages from './components/Languages.jsx';
 import Phrases from './components/Phrases.jsx';
+import SpeechPlayer from './components/SpeechPlayer.jsx';
 import _ from 'lodash';
 import 'normalize.css';
 const axios = require('axios');
@@ -13,12 +14,13 @@ class App extends React.Component {
     super(props);
     this.state = {
       userInput: '',
-      transformedText: '',
+      translatedText: '',
       languageCode: 'en',
       listening: false,
       inputLanguageCode: 'en',
       commonPhrases: [],
       copySuccess: false,
+      voicePlaying: false,
     }
     this.handleInputChange = this.handleInputChange.bind(this);
     this.handleOutputLanguageChange = this.handleOutputLanguageChange.bind(this);
@@ -28,6 +30,7 @@ class App extends React.Component {
     this.copyToClipBoard = this.copyToClipBoard.bind(this);
     this.getPhrases = this.getPhrases.bind(this);
     this.initializeSpeechRecognition = this.initializeSpeechRecognition.bind(this);
+    this.createSpeech = this.createSpeech.bind(this);
     this.delayedTranslate = _.debounce(this.translateText, 300);
     this.recognition = new SpeechRecognition();
     this.translateArea = React.createRef();
@@ -118,6 +121,28 @@ class App extends React.Component {
     };
   }
 
+  createSpeech(io) {
+    const { userInput, translatedText, inputLanguageCode, languageCode } = this.state;
+    if (userInput === '') {
+      return;
+    }
+    let text = userInput;
+    let langCode = inputLanguageCode;
+    if (io === 'output') {
+      text = translatedText;
+      langCode = languageCode;
+      console.log('output');
+    }
+    axios.post('/text-to-speech', {
+      text,
+      langCode,
+    })
+      .then((response) => {})
+      .catch((error) => {
+        console.error(error);
+      });
+  }
+
   translateText() {
     const { userInput, languageCode } = this.state;
     if (userInput === '') {
@@ -163,6 +188,7 @@ class App extends React.Component {
       inputLanguageCode,
       commonPhrases,
       copySuccess,
+      voicePlaying,
     } = this.state;
     return (
       <div id="app">
@@ -177,7 +203,7 @@ class App extends React.Component {
             <div id="input-well-footer">
               <div id="input-well-footer-buttons">
                 <button className={`btn ${listening ? 'btn-disabled' : ''}`} onClick={this.handleListen} disabled={listening}>{listening ? <i className="bi bi-mic-fill" alt="Translate by voice" /> : <i className="bi bi-mic" alt="Microphone active" />}</button>
-                {userInput ? <button className="btn"><i className="bi bi-megaphone" alt="Listen" /></button> : ''}
+                {userInput ? <SpeechPlayer createSpeech={this.createSpeech} io={'input'}/> : ''}
               </div>
               <span>{`${userInput.length}/1000`}</span>
             </div>
@@ -189,7 +215,7 @@ class App extends React.Component {
             {userInput
               ? (
                 <div id="output-well-footer">
-                  <button className="btn translate-active"><i className="bi bi-megaphone" alt="Listen" /></button>
+                  <SpeechPlayer createSpeech={this.createSpeech} io={'output'}/>
                   <button className="btn translate-active" onClick={() => this.copyToClipBoard(this.translateArea)}><i className={`bi ${copySuccess ? 'bi-clipboard-check btn-disabled' : 'bi-clipboard'}`} /></button>
                 </div>
               ) : ''}

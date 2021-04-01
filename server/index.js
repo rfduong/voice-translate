@@ -2,8 +2,11 @@ const express = require('express');
 const db = require('../database');
 const Phrase = require('../database/controllers/phrases.js');
 const { Translate } = require('@google-cloud/translate').v2;
-// const recorder = require('node-record-lpcm16');
-// const speech = require('@google-cloud/speech');
+const textToSpeech = require('@google-cloud/text-to-speech');
+const axios = require('axios');
+
+const fs = require('fs');
+const util = require('util');
 
 const app = express();
 require('dotenv').config();
@@ -16,6 +19,8 @@ app.use(express.json());
 app.use(express.urlencoded({extended: true}));
 
 app.use(express.static(__dirname + '/../client/dist'));
+
+app.use(express.static(__dirname + '/output'));
 
 /*
 Translation
@@ -66,17 +71,41 @@ app.get('/languages', (req, res) => {
 });
 
 /*
-Speech to text - google speech api - doesn't work
-- Tried quickstart example in here, would not work
-  - quickstart example: https://cloud.google.com/speech-to-text/docs/samples/speech-transcribe-streaming-mic#speech_transcribe_streaming_mic-nodejs
-- doesn't work on their terminal either
-- depends on sox
-  - sox is a library last updated 6 years ago that depends on deprecated ubuntu features
-- also, i'm using windows, which means i'm on WSL
-- WSL has no way of natively connecting my microphone so I can't test it
-- will have to use web speech api in browser rather than google speech api on node
+Text to speech
 */
+const client = new textToSpeech.TextToSpeechClient();
 
+async function getSpeech(text, languageCode) {
+  const request = {
+    input: { text },
+    voice: { languageCode, ssmlGender: 'NEUTRAL'},
+    audioConfig: { audioEncoding: 'MP3' },
+  };
+  const [response] = await client.synthesizeSpeech(request);
+  const writeFile = util.promisify(fs.writeFile);
+  const path = __dirname + '/output/output.mp3';
+  await writeFile(path, response.audioContent, 'binary');
+  console.log('Audio content written to file: output.mp3');
+}
+
+app.post('/text-to-speech', (req, res) => {
+  const {
+    text,
+    langCode
+  } = req.body;
+  if (typeof text !== 'string' || text === '' || text.length > 1000 || typeof langCode !== 'string' || langCode == '') {
+    console.log('error');
+    console.log(text);
+    res.status(500).send('Error getting speech');
+    return;
+  }
+  getSpeech(text, langCode);
+  res.send('audio file made');
+});
+
+/*
+Phrases
+*/
 app.get('/phrases', (req, res) => {
   Phrase.getAll()
     .then((response) => {
@@ -93,6 +122,10 @@ app.post('/phrases', (req, res) => {
     userInput,
     languageCode,
   } = req.body;
+  if (typeof userInput !== 'string' || userInput === '' || userInput.length > 1000 || typeof languageCode !== 'string' || languageCode == '') {
+    res.status(500).send('Error getting speech');
+    return;
+  }
   Phrase.findPhraseAndUpdate(userInput, languageCode)
     .then((response) => {
       res.status(201).send('');

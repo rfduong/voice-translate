@@ -155,7 +155,7 @@ class App extends React.Component {
           <Languages io="output" translateTo={this.handleOutputLanguageChange} selectedLanguage={languageCode} />
           <div id="input-well">
             <form id="input-well-content">
-              <textarea id="userInput" value={userInput} onChange={this.handleChange} maxLength="1000" autoFocus></textarea>
+              <textarea id="userInput" value={userInput} onChange={this.handleChange} placeholder={listening ? 'Speak now' : ''}maxLength="1000" autoFocus></textarea>
             </form>
             <div id="input-well-footer">
               <div id="input-well-footer-buttons">

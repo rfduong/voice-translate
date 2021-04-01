@@ -36,9 +36,7 @@ class SpeechPlayer extends React.Component {
     const { play } = this.state;
     const { createSpeech, io } = this.props;
     return (
-      <div>
-        <button className={`btn ${io === 'output' ? 'translate-active' : ''}`} onClick={() => {this.togglePlay(); createSpeech(io)}}><i className={`bi ${play ? 'bi-megaphone-fill btn-disabled' : 'bi-megaphone'}`} alt="Listen" /></button>
-      </div>
+      <button className={`btn ${io === 'output' ? 'translate-active' : ''}`} onClick={() => {this.togglePlay(); createSpeech(io)}}><i className={`bi ${play ? 'bi-megaphone-fill btn-disabled' : 'bi-megaphone'}`} alt="Listen" /></button>
     );
   }
 }

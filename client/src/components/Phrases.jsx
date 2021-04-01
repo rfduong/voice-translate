@@ -8,7 +8,7 @@ class Phrases extends React.Component {
     };
   }
   render() {
-    const { commonPhrases } = this.props;
+    const { commonPhrases, changeInput } = this.props;
     return (
       <div id="common-phrases">
         <h3>Common phrases</h3>
@@ -17,7 +17,7 @@ class Phrases extends React.Component {
             return (
               <div className="phrase" key={phrase._id}>
                 <div className="phrase-number"><span>{`${index + 1}`}</span></div>
-                <div className="phrase-text"><span>{phrase.userInput}</span></div>
+                <div className="phrase-text"><span onClick={() => changeInput(phrase.userInput)}>{phrase.userInput}</span></div>
               </div>
             );})}
         </div>

@@ -23,6 +23,8 @@ class App extends React.Component {
     this.handleOutputLanguageChange = this.handleOutputLanguageChange.bind(this);
     this.handleInputLanguageChange = this.handleInputLanguageChange.bind(this);
     this.handleListen = this.handleListen.bind(this);
+    this.changeInput = this.changeInput.bind(this);
+    this.getPhrases = this.getPhrases.bind(this);
     this.initializeSpeechRecognition = this.initializeSpeechRecognition.bind(this);
     this.delayedTranslate = _.debounce(this.translateText, 300);
     this.recognition = new SpeechRecognition();
@@ -60,12 +62,17 @@ class App extends React.Component {
   getPhrases() {
     axios.get('/phrases')
       .then((response) => {
-        console.log(response.data);
         this.setState({ commonPhrases: response.data });
       })
       .catch((error) => {
         console.error(error);
       })
+  }
+
+  changeInput(text) {
+    this.setState({
+      userInput: text,
+    }, () => this.delayedTranslate());
   }
 
   initializeSpeechRecognition() {
@@ -111,6 +118,15 @@ class App extends React.Component {
         .then((response) => {
           this.setState({
             translatedText: response.data,
+          }, () => {
+            axios.post('/phrases', {
+              userInput,
+              languageCode: "en",
+            })
+              .then(() => {})
+              .catch((postErr) => {
+                console.error(postErr);
+              })
           });
         })
         .catch((error) => {
@@ -131,7 +147,6 @@ class App extends React.Component {
       inputLanguageCode,
       commonPhrases,
     } = this.state;
-    console.log(commonPhrases, commonPhrases.length);
     return (
       <div id="app">
         <h2>Voice Translation</h2>
@@ -163,7 +178,7 @@ class App extends React.Component {
               ) : ''}
           </div>
         </div>
-        <Phrases commonPhrases={commonPhrases} />
+        <Phrases commonPhrases={commonPhrases} changeInput={this.changeInput} />
       </div>
     );
   }

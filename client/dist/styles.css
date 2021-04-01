@@ -86,7 +86,10 @@ textarea:focus, input:focus {
 }
 
 .btn-disabled {
-  color: black;
+  /* color: black; */
+  color: #5ab9ea;
+  color: #a8d0e6;
+  color: #8fc1e3;
 }
 
 #common-phrases {
@@ -106,7 +109,6 @@ textarea:focus, input:focus {
   font-weight: normal;
   border-bottom: 1px solid #ccc;
 }
-
 
 .phrase {
   margin: 10px 0;
@@ -134,6 +136,14 @@ textarea:focus, input:focus {
   margin-right: 20px;
 }
 
+.phrase-text:hover {
+  cursor: pointer;
+  /* color: #659dbd; */
+  color: #5ab9ea;
+  color: #a8d0e6;
+  color: #8fc1e3;
+}
+
 @media screen and (min-width: 1280px) {
   #app {
     max-width: 1280px;
@@ -158,6 +168,10 @@ textarea:focus, input:focus {
   #input-well {
     border-bottom: 1px solid #ccc;
     border-right: none;
+  }
+
+  #common-phrases h3 {
+    text-align: center;
   }
 
 }

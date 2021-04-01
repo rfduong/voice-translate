@@ -89,6 +89,22 @@ app.get('/phrases', (req, res) => {
     });
 });
 
+app.post('/phrases', (req, res) => {
+  const {
+    userInput,
+    languageCode,
+  } = req.body;
+  Phrase.findPhraseAndUpdate(userInput, languageCode)
+    .then((response) => {
+      console.log(response);
+      res.status(201).send('');
+    })
+    .then((error) => {
+      console.error(error);
+      res.status(500).send(error);
+    });
+});
+
 app.listen(PORT, () => {
   console.log(`listening on port ${PORT}`);
 });

@@ -6,19 +6,28 @@ class SpeechPlayer extends React.Component {
     this.state = {
       play: false,
     }
-    this.audio = new Audio('/output.mp3');
+    this.audio = new Audio('/output.mp3?nocache='+new Date().getTime());
     this.togglePlay = this.togglePlay.bind(this);
   }
 
   componentDidMount() {
-    this.audio.addEventListener('ended', () => this.setState({ play: false }));
+    this.audio.addEventListener('ended', () => {
+      this.setState({ play: false}, () => {
+        this.audio.src = '/output.mp3?nocache='+new Date().getTime();
+      });
+    });
   }
 
   componentWillUnmount() {
-    this.audio.removeEventListener('ended', () => this.setState({ play: false }));
+    this.audio.addEventListener('ended', () => {
+      this.setState({ play: false}, () => {
+        this.audio.src = '/output.mp3?nocache='+new Date().getTime();
+      });
+    });
   }
 
   togglePlay() {
+    console.log('audio should reload');
     const { play } = this.state;
     this.setState( {
       play: !play,
@@ -27,7 +36,6 @@ class SpeechPlayer extends React.Component {
         this.audio.play();
       } else {
         this.audio.pause();
-        this.audio.load();
       }
     });
   }

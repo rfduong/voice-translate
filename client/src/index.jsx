@@ -178,7 +178,7 @@ class App extends React.Component {
               ) : ''}
           </div>
         </div>
-        <Phrases commonPhrases={commonPhrases} changeInput={this.changeInput} />
+        {commonPhrases.length > 0 ? <Phrases commonPhrases={commonPhrases} changeInput={this.changeInput} /> : ''}
       </div>
     );
   }

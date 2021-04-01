@@ -132,14 +132,12 @@ class App extends React.Component {
       text = translatedText;
       langCode = languageCode;
     }
-    axios.post('/text-to-speech', {
+    console.log(text, langCode);
+    return axios.post('/text-to-speech', {
       text,
       langCode,
-    })
-      .then((response) => {})
-      .catch((error) => {
-        console.error(error);
-      });
+      io,
+    });
   }
 
   translateText() {

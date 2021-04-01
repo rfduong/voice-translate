@@ -75,7 +75,7 @@ Text to speech
 */
 const client = new textToSpeech.TextToSpeechClient();
 
-async function getSpeech(text, languageCode) {
+async function getSpeech(text, languageCode, io) {
   const request = {
     input: { text },
     voice: { languageCode, ssmlGender: 'NEUTRAL'},
@@ -83,15 +83,16 @@ async function getSpeech(text, languageCode) {
   };
   const [response] = await client.synthesizeSpeech(request);
   const writeFile = util.promisify(fs.writeFile);
-  const path = __dirname + '/output/output.mp3';
+  const path = __dirname + `/output/${io}.mp3`;
   await writeFile(path, response.audioContent, 'binary');
-  console.log('Audio content written to file: output.mp3');
+  console.log(`Audio content written to file: ${io}.mp3`);
 }
 
 app.post('/text-to-speech', (req, res) => {
   const {
     text,
-    langCode
+    langCode,
+    io,
   } = req.body;
   if (typeof text !== 'string' || text === '' || text.length > 1000 || typeof langCode !== 'string' || langCode == '') {
     console.log('error');
@@ -99,7 +100,7 @@ app.post('/text-to-speech', (req, res) => {
     res.status(500).send('Error getting speech');
     return;
   }
-  getSpeech(text, langCode);
+  getSpeech(text, langCode, io);
   res.send('audio file made');
 });
 

@@ -1,6 +1,4 @@
 import React from 'react';
-import regeneratorRuntime from 'regenerator-runtime';
-
 
 class SpeechPlayer extends React.Component {
   constructor(props) {
@@ -17,9 +15,6 @@ class SpeechPlayer extends React.Component {
     this.audio.addEventListener('ended', () => {
       this.setState({ play: false}, () => {
         this.audio.src = `/${io}.mp3?nocache=`+new Date().getTime();
-        console.log(this.audio.src);
-        this.audio.load();
-        // this.audio = new Audio('/output.mp3?nocache='+new Date().getTime());
       });
     });
   }
@@ -29,16 +24,11 @@ class SpeechPlayer extends React.Component {
     this.audio.removeEventListener('ended', () => {
       this.setState({ play: false}, () => {
         this.audio.src = `/${io}.mp3?nocache=`+new Date().getTime();
-        console.log(this.audio.src);
-        this.audio.load();
-        // this.audio = new Audio('/output.mp3?nocache='+new Date().getTime());
       });
     });
   }
 
   togglePlay() {
-    // this.audio.src = '/output.mp3?nocache='+new Date().getTime();
-    this.audio.load();
     const { play } = this.state;
     this.setState( {
       play: !play,
@@ -59,7 +49,6 @@ class SpeechPlayer extends React.Component {
         createSpeech(io)
           .then(() => {
             this.audio.src = `/${io}.mp3?nocache=`+new Date().getTime();
-            console.log('audio should reload', this.audio.src);
             this.togglePlay();
           })
           .catch((error) => {

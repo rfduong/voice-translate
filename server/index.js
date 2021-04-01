@@ -23,7 +23,9 @@ app.use(express.static(__dirname + '/../client/dist'));
 app.use(express.static(__dirname + '/output'));
 
 /*
+========================================================================
 Translation
+========================================================================
 */
 const translate = new Translate({ projectId });
 
@@ -71,7 +73,9 @@ app.get('/languages', (req, res) => {
 });
 
 /*
+========================================================================
 Text to speech
+========================================================================
 */
 const client = new textToSpeech.TextToSpeechClient();
 
@@ -95,8 +99,6 @@ app.post('/text-to-speech', (req, res) => {
     io,
   } = req.body;
   if (typeof text !== 'string' || text === '' || text.length > 1000 || typeof langCode !== 'string' || langCode == '') {
-    console.log('error');
-    console.log(text);
     res.status(500).send('Error getting speech');
     return;
   }
@@ -107,7 +109,9 @@ app.post('/text-to-speech', (req, res) => {
 });
 
 /*
+========================================================================
 Phrases
+========================================================================
 */
 app.get('/phrases', (req, res) => {
   Phrase.getAll()

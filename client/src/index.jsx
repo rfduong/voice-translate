@@ -95,7 +95,6 @@ class App extends React.Component {
 
   initializeSpeechRecognition() {
     const context = this;
-    // This runs when the speech recognition service starts
     this.recognition.onstart = function() {
       context.setState({
         listening: true,
@@ -103,13 +102,11 @@ class App extends React.Component {
     };
 
     this.recognition.onspeechend = function() {
-        // when user is done speaking
         context.recognition.stop();
         context.setState({
           listening: false,
         });
     }
-    // This runs when the speech recognition service returns result
     this.recognition.onresult = function(event) {
       let transcript = event.results[0][0].transcript;
       let confidence = event.results[0][0].confidence;

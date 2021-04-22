@@ -4,7 +4,7 @@ An app that translates a user's speech or text in real time in many different la
 To run:  
 1. Set up .env with google api keys: https://cloud.google.com/docs/authentication/getting-started  
 2. Create additional environment variable GOOGLE_PROJECT_ID  
-3. sudo service mongodb  
+3. sudo service mongodb start  
 4. npm run react-dev  
 5. npm run start  
 6. Visit the website at localhost:3000
